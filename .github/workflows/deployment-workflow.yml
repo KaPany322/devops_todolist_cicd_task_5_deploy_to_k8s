@@ -49,11 +49,11 @@ jobs:
 
     - name: Spin up a cluster
       run: |
-        kind create cluster --config cluster.yml
+        kind create cluster --config ./cluster.yml
 
     - name: Helm dry run
       run: |
-        helm install --dry-run ${{ inputs.helm-release-name }}  -f ${{ inputs.helm-values-path }}
+        helm install --dry-run ${{ inputs.helm-release-name }} ./todoapp-*.tgz -f ${{ inputs.helm-values-path }}
 
     - name: Deploy helm chart
       run: |

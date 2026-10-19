@@ -35,6 +35,12 @@ jobs:
         name: helm-artifacts
         path: .
 
+    - name: Download Helm artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: kind-cluster
+        path: .
+
     - name: Set Up Helm
       uses: azure/setup-helm@v4.2.0
 
@@ -47,9 +53,9 @@ jobs:
 
     - name: Helm dry run
       run: |
-        helm install --dry-run./todoapp-*.tgz -f ${{ inputs.helm-values-path }}
+        helm install --dry-run ${{ inputs.helm-release-name }}  -f ${{ inputs.helm-values-path }}
 
-    - name: Deploy helm to Development
+    - name: Deploy helm chart
       run: |
         helm upgrade --install --atomic --wait --timeout 3600s -debug ${{ inputs.helm-release-name }} ./todoapp-*.tgz \
          -f ${{ inputs.helm-values-path }} \
